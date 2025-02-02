@@ -11,7 +11,7 @@ const app = express();
 const corsOptions = {
   origin: process.env.FRONTEND_URL || '*',  // This will use the URL from the environment variable or default to '*'
   methods: ['GET', 'POST'],  // Allow only necessary methods
-  preflightContinue: false,
+  Credentials:true,
   optionsSuccessStatus: 204,  // Some legacy browsers might require this status code
 };
 
