@@ -9,10 +9,11 @@ const app = express();
 
 // CORS configuration (only allow FRONTEND_URL from environment variable)
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',  // This will use the URL from the environment variable or default to '*'
-  methods: ['GET', 'POST'],  // Allow only necessary methods
-  Credentials:true,
-  optionsSuccessStatus: 204,  // Some legacy browsers might require this status code
+  origin: process.env.FRONTEND_URL || 'https://beyond-chats-deploy-63mz-bedzfdx0q-rajus-projects-94af27f6.vercel.app',
+  methods: ['GET', 'POST'],
+  credentials: true,  // 
+  allowedHeaders: ['Content-Type', 'Authorization'], // 
+  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
