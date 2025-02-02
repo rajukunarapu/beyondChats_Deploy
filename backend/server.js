@@ -7,22 +7,18 @@ const cors = require('cors');
 
 const app = express();
 
-// CORS configuration (allow only the frontend URL)
-const allowedOrigins = [process.env.FRONTEND_URL];
+// CORS configuration (only allow FRONTEND_URL from environment variable)
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: process.env.FRONTEND_URL || '*',  // This will use the URL from the environment variable or default to '*'
+  methods: ['GET', 'POST'],  // Allow only necessary methods
+  preflightContinue: false,
+  optionsSuccessStatus: 204,  // Some legacy browsers might require this status code
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-const port = process.env.PORT || 4000;  // Use environment variable for port, fallback to 4000 if not set
+const port = process.env.PORT || 4000;
 let verificationCode = {};
 
 // Send mail
@@ -36,8 +32,8 @@ app.post('/send-email', async (req, res) => {
     let transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER,  // Use environment variable
-        pass: process.env.EMAIL_PASS,  // Use environment variable
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
@@ -45,7 +41,7 @@ app.post('/send-email', async (req, res) => {
     verificationCode[email] = code;
 
     let mailOptions = {
-      from: process.env.EMAIL_USER,  // Use environment variable
+      from: process.env.EMAIL_USER,
       to: email,
       subject: 'Enter this temporary code to continue',
       text: `Verification Code is : ${code}`,
